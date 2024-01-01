@@ -83,7 +83,7 @@ const Home = () => {
 
         <Section delay={0.1}>
           <Heading as="h3" variant="section-title">
-            Work
+            About me
           </Heading>
           <Paragraph>
             I&apos;m a freelance and a front-end web developer based in Viet
