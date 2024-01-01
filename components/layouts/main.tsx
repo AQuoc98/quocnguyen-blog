@@ -1,7 +1,7 @@
 import { Box, Container } from '@chakra-ui/react'
 import Head from 'next/head'
 import { NextRouter } from 'next/router'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import Footer from '../footer'
 import NavBar from '../navbar'
 
@@ -23,8 +23,7 @@ const Main = ({
 
       <NavBar path={router.asPath} />
 
-      <Container maxW="container.md" pt={14}>
-        {/* 3D */}
+      <Container maxW="container.md" pt={20}>
         {children}
         <Footer />
       </Container>

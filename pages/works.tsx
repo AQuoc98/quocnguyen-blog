@@ -3,6 +3,7 @@ import Section from '@/components/section'
 import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
 import Layout from '../components/layouts/article'
 import thumbFlutter from '../public/images/works/fluter.jpg'
+import thumbBabylon from '../public/images/works/babylon.png'
 
 const Works = () => (
   <Layout title="Works">
@@ -14,19 +15,15 @@ const Works = () => (
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
         <Section>
           <WorkGridItem
-            id="future"
-            title="Future App"
-            thumbnail={thumbFlutter}
+            id="babylon"
+            title="Babylonjs Playground"
+            thumbnail={thumbBabylon}
           >
-            I&apos;m working on this
+            Demo simple 3D model
           </WorkGridItem>
         </Section>
         <Section>
-          <WorkGridItem
-            id="future"
-            title="Future App"
-            thumbnail={thumbFlutter}
-          >
+          <WorkGridItem id="future" title="Future App" thumbnail={thumbFlutter}>
             I&apos;m working on this
           </WorkGridItem>
         </Section>
