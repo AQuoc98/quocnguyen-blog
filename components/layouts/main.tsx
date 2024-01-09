@@ -18,6 +18,7 @@ const Main = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Quoc's homepage" />
         <meta name="author" content="Quoc Nguyen" />
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
         <title>Quoc Nguyen - Homepage</title>
       </Head>
 
