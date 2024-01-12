@@ -5,7 +5,7 @@ import type { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 import Chakra from '../components/chakra'
 import Layout from '../components/layouts/main'
-import '@fontsource-variable/source-code-pro';
+import '@fontsource-variable/source-code-pro'
 
 if (typeof window !== 'undefined') {
   window.history.scrollRestoration = 'manual'

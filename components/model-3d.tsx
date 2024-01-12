@@ -1,19 +1,13 @@
 'use client'
 
-import {
-  Color3,
-  Engine,
-  Scene,
-  SceneLoader
-} from '@babylonjs/core'
+import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
 import '@babylonjs/loaders/glTF'
 import { useEffect, useRef } from 'react'
 
 const Model3D = () => {
   const reactCanvas = useRef(null)
-  let box: any
 
-  const onSceneReady = (scene: Scene) => {
+  const onSceneReady = (scene: Scene, engine: Engine) => {
     scene.createDefaultCameraOrLight(true, true, true)
 
     SceneLoader.Append('/', 'LittlestTokyo.glb', scene, scene => {
@@ -22,16 +16,8 @@ const Model3D = () => {
 
       const helper = scene.createDefaultEnvironment()
       helper?.setMainColor(Color3.Teal())
+      engine.hideLoadingUI()
     })
-  }
-
-  const onRender = (scene: Scene) => {
-    if (box !== undefined) {
-      const deltaTimeInMillis = scene.getEngine().getDeltaTime()
-
-      const rpm = 10
-      box.rotation.y += (rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000)
-    }
   }
 
   useEffect(() => {
@@ -40,15 +26,13 @@ const Model3D = () => {
 
     const engine = new Engine(canvas, true, undefined, true)
     const scene = new Scene(engine, undefined)
-    if (scene.isReady()) {
-      onSceneReady(scene)
-    } else {
-      scene.onReadyObservable.addOnce(scene => onSceneReady(scene))
-    }
+
+    onSceneReady(scene, engine)
 
     engine.runRenderLoop(() => {
-      if (typeof onRender === 'function') onRender(scene)
-      scene.render()
+      if (scene) {
+        scene.render()
+      }
     })
 
     const resize = () => {
