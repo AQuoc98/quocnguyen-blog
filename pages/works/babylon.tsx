@@ -10,7 +10,7 @@ const Work = () => (
       <Title>
         Babylon Playground <Badge>2024-2025</Badge>
       </Title>
-      <P>Show simple demo for 3D model</P>
+      <P>Simple 3D model</P>
       <List ml={4} my={4}>
         <ListItem>
           <Meta>Platform</Meta>
@@ -21,7 +21,7 @@ const Work = () => (
           <span>babylon.js</span>
         </ListItem>
       </List>
-      <Box h={300}>
+      <Box h={500}>
         <Model3D />
       </Box>
     </Container>

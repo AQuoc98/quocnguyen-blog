@@ -97,7 +97,7 @@ const Home = () => {
               colorScheme="teal"
               onClick={handleDownload}
             >
-              My portfolio
+              My CV
             </Button>
           </Box>
         </Section>

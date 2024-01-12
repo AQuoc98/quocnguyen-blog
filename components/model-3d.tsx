@@ -1,121 +1,79 @@
 'use client'
 
 import {
-  ArcRotateCamera,
   Color3,
-  Color4,
   Engine,
-  HemisphericLight,
-  MeshBuilder,
   Scene,
-  SceneLoader,
-  Sound,
-  StandardMaterial,
-  Texture,
-  Vector3,
-  Vector4
+  SceneLoader
 } from '@babylonjs/core'
+import '@babylonjs/loaders/glTF'
 import { useEffect, useRef } from 'react'
 
 const Model3D = () => {
   const reactCanvas = useRef(null)
+  let box: any
+
+  const onSceneReady = (scene: Scene) => {
+    scene.createDefaultCameraOrLight(true, true, true)
+
+    SceneLoader.Append('/', 'LittlestTokyo.glb', scene, scene => {
+      // Create a camera pointing at your model.
+      scene.createDefaultCameraOrLight(true, true, true)
+
+      const helper = scene.createDefaultEnvironment()
+      helper?.setMainColor(Color3.Teal())
+    })
+  }
+
+  const onRender = (scene: Scene) => {
+    if (box !== undefined) {
+      const deltaTimeInMillis = scene.getEngine().getDeltaTime()
+
+      const rpm = 10
+      box.rotation.y += (rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000)
+    }
+  }
 
   useEffect(() => {
-    const canvas = reactCanvas.current
-    const engine = new Engine(canvas, true)
+    const { current: canvas } = reactCanvas
+    if (!canvas) return
 
-    const buildGround = () => {
-      const ground = MeshBuilder.CreateGround('ground', {
-        width: 10,
-        height: 10
-      })
+    const engine = new Engine(canvas, true, undefined, true)
+    const scene = new Scene(engine, undefined)
+    if (scene.isReady()) {
+      onSceneReady(scene)
+    } else {
+      scene.onReadyObservable.addOnce(scene => onSceneReady(scene))
     }
 
-    const buildBox = () => {
-      //texture
-      const boxMat = new StandardMaterial('boxMat')
-      boxMat.diffuseTexture = new Texture(
-        'https://assets.babylonjs.com/environments/cubehouse.png'
-      )
-
-      //options parameter to set different images on each side
-      const faceUV = []
-      faceUV[0] = new Vector4(0.5, 0.0, 0.75, 1.0) //rear face
-      faceUV[1] = new Vector4(0.0, 0.0, 0.25, 1.0) //front face
-      faceUV[2] = new Vector4(0.25, 0, 0.5, 1.0) //right side
-      faceUV[3] = new Vector4(0.75, 0, 1.0, 1.0) //left side
-      // top 4 and bottom 5 not seen so not set
-
-      /**** World Objects *****/
-      const box = MeshBuilder.CreateBox('box', {
-        faceUV: faceUV,
-        wrap: true
-      })
-      box.material = boxMat
-      box.position.y = 0.5
-
-      return box
-    }
-
-    const buildRoof = () => {
-      //texture
-      const roofMat = new StandardMaterial('roofMat')
-      roofMat.diffuseTexture = new Texture(
-        'https://assets.babylonjs.com/environments/roof.jpg'
-      )
-
-      const roof = MeshBuilder.CreateCylinder('roof', {
-        diameter: 1.3,
-        height: 1.2,
-        tessellation: 3
-      })
-      roof.material = roofMat
-      roof.scaling.x = 0.75
-      roof.rotation.z = Math.PI / 2
-      roof.position.y = 1.22
-
-      return roof
-    }
-
-    const createScene = function () {
-      const scene = new Scene(engine)
-      scene.clearColor = new Color4(0, 0, 0, 0)
-
-      /**** Set camera and light *****/
-      const camera = new ArcRotateCamera(
-        'camera',
-        -Math.PI / 2,
-        Math.PI / 2.5,
-        10,
-        new Vector3(0, 0, 0)
-      )
-      camera.attachControl(canvas, true)
-      const light = new HemisphericLight('light', new Vector3(1, 1, 0))
-
-      const ground = buildGround()
-      const box = buildBox()
-      const roof = buildRoof()
-
-      return scene
-    }
-
-    engine.runRenderLoop(function () {
+    engine.runRenderLoop(() => {
+      if (typeof onRender === 'function') onRender(scene)
       scene.render()
     })
 
-    // Watch for browser/canvas resize events
-    window.addEventListener('resize', function () {
-      engine.resize()
-    })
+    const resize = () => {
+      scene.getEngine().resize()
+    }
 
-    const scene = createScene()
+    if (window) {
+      window.addEventListener('resize', resize)
+    }
+
+    return () => {
+      scene.getEngine().dispose()
+
+      if (window) {
+        window.removeEventListener('resize', resize)
+      }
+    }
   }, [])
 
   return (
     <canvas
-      style={{ width: '100%', outline: 'none' }}
+      style={{ width: '100%', height: '100%', outline: 'none' }}
       ref={reactCanvas}
-    ></canvas>
+      id="my-canvas"
+    />
   )
 }
 
