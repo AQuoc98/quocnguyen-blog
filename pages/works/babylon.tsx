@@ -3,9 +3,17 @@ import { Badge, Box, Container, List, ListItem } from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
 import P from '../../components/paragraph'
 import { Meta, Title } from '../../components/work'
+import { Global } from '@emotion/react'
 
 const Work = () => (
   <Layout title="Future">
+    <Global
+      styles={{
+        '#babylonjsLoadingDiv': {
+          display: 'none'
+        }
+      }}
+    />
     <Container>
       <Title>
         Babylon Playground <Badge>2024-2025</Badge>

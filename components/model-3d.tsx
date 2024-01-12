@@ -13,10 +13,6 @@ const Model3D = () => {
     SceneLoader.Append('/', 'LittlestTokyo.glb', scene, scene => {
       // Create a camera pointing at your model.
       scene.createDefaultCameraOrLight(true, true, true)
-
-      const helper = scene.createDefaultEnvironment()
-      helper?.setMainColor(Color3.Teal())
-      engine.hideLoadingUI()
     })
   }
 
