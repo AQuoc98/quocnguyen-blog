@@ -1,6 +1,6 @@
 'use client'
 
-import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
+import { Color4, Engine, Scene, SceneLoader } from '@babylonjs/core'
 import '@babylonjs/loaders/glTF'
 import { useEffect, useRef } from 'react'
 
@@ -8,12 +8,13 @@ const Model3D = () => {
   const reactCanvas = useRef(null)
 
   const onSceneReady = (scene: Scene, engine: Engine) => {
-    scene.createDefaultCameraOrLight(true, true, true)
+    scene.clearColor = new Color4(0, 0, 0, 0)
 
     SceneLoader.Append('/', 'LittlestTokyo.glb', scene, scene => {
-      // Create a camera pointing at your model.
       scene.createDefaultCameraOrLight(true, true, true)
     })
+
+    SceneLoader.ShowLoadingScreen = false
   }
 
   useEffect(() => {
@@ -22,6 +23,8 @@ const Model3D = () => {
 
     const engine = new Engine(canvas, true, undefined, true)
     const scene = new Scene(engine, undefined)
+
+    scene.createDefaultCameraOrLight(true, true, true)
 
     onSceneReady(scene, engine)
 
